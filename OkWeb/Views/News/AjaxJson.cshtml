@@ -1,0 +1,52 @@
+﻿@model List<Ok.Domain.Core.Source>
+@{
+    ViewBag.Title = "Ajax версия c json";
+}
+
+<div class="border">
+    <h2 class="ml-3 mt-3">Новостная лента</h2>
+    <div class="ml-3 mt-2">
+        <label>Источник ленты</label>
+        <select name="source">
+            @if (Model != null && Model.Any())
+            {
+                foreach (var s in Model)
+                {
+                    <option value="@s.SourceId">@s.Name</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="ml-3">
+        <div>
+            <input type="radio" name="sort" value="date" checked="checked" />
+            <label>Сортировать по дате</label>
+            <input type="radio" name="sort" value="source" class="ml-2" />
+            <label>Сортировать по источнику</label>
+        </div>
+        <div class="mt-2">
+            <input type="button" value="Просмотреть" />
+        </div>
+    </div>
+    <div class="m-3">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Источник</th>
+                <th>Название новости</th>
+                <th>Описание новости</th>
+                <th>Дата публикации</th>
+            </tr>
+            </thead>
+            <tbody id="result"></tbody>
+        </table>
+        <div class="m-3 d-flex flex-row justify-content-center btn-group">
+            <ul id="pagination" class="pagination" style="display: none !important;"></ul>
+        </div>
+        <div id="loading" style="display:none; color:Red; font-weight:bold;">
+            <p>Идет загрузка...</p>
+        </div>
+    </div>
+</div>
+
+

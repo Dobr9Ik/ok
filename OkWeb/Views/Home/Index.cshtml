@@ -1,0 +1,9 @@
+﻿@{
+    ViewBag.Title = "Главная страница Rss новостей";
+}
+
+<div class="d-flex justify-content-center">
+    @Html.ActionLink("Server", "Index", "News", null, new {@class = "btn btn-info"})
+    @Html.ActionLink("Ajax Form", "Ajax", "News", null, new {@class = "btn btn-info ml-3"})
+    @Html.ActionLink("Ajax Json", "AjaxJson", "News", null, new {@class = "btn btn-info ml-3"})
+</div>

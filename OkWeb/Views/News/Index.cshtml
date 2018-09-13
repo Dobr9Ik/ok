@@ -1,0 +1,106 @@
+﻿@model OkWeb.Models.NewsView
+@{
+    ViewBag.Title = "Серверная версия";
+}
+
+<div class="border">
+    <h2 class="ml-3 mt-3">Новостная лента</h2>
+    @using (Html.BeginForm("Index", "News", FormMethod.Post))
+    {
+        <div class="ml-3 mt-2">
+            <label>Источник ленты</label>
+            <select name="source">
+                @if (Model != null)
+                {
+                    foreach (var s in Model.Sources)
+                    {
+                        if (s.SourceId == Model.Source)
+                        {
+                            <option value="@s.SourceId" selected="selected">@s.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@s.SourceId">@s.Name</option>
+                        }
+                    }
+                }
+            </select>
+        </div>
+        <div class="ml-3">
+            <div>
+                @if (Model != null && Model.Sort.Equals("date"))
+                {
+                    <input type="radio" name="sort" value="date" checked="checked" />
+                }
+                else
+                {
+                    <input type="radio" name="sort" value="date" />
+                }
+                <label>Сортировать по дате</label>
+
+                @if (Model != null && Model.Sort.Equals("source"))
+                {
+                    <input type="radio" name="sort" value="source" checked="checked" class="ml-2" />
+                }
+                else
+                {
+                    <input type="radio" name="sort" value="source" class="ml-2" />
+                }
+                <label>Сортировать по источнику</label>
+            </div>
+            <div class="mt-2">
+                <input type="submit" value="Просмотреть"/>
+            </div>
+        </div>
+    }
+    <div class="m-3">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Источник</th>
+                <th>Название новости</th>
+                <th>Описание новости</th>
+                <th>Дата публикации</th>
+            </tr>
+            </thead>
+            @if (Model != null && Model.News.Any())
+            {
+                <tbody>
+                @foreach (var n in Model.News)
+                {
+                    <tr>
+                        <td>@n.Source.Name</td>
+                        <td>@n.Title</td>
+                        <td style="word-break: break-all">@n.Description</td>
+                        <td>@n.Date</td>
+                    </tr>
+                }
+                </tbody>
+            }
+
+        </table>
+    </div>
+    <div class="m-3 d-flex flex-row justify-content-center btn-group">
+
+        @if (Model != null && Model.Pagination.TotalPages > 1)
+        {
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.Pagination.TotalPages; i++)
+                {
+                    if (i == Model.Pagination.CurrentPage)
+                    {
+                        <li class="page-item active">
+                            @Html.ActionLink(i.ToString(), "Index", "News", new { page = i, sort = Model.Sort, source = Model.Source }, new { @class = "page-link" })
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            @Html.ActionLink(i.ToString(), "Index", "News", new { page = i, sort = Model.Sort, source = Model.Source }, new { @class = "page-link" })
+                        </li>
+                    }
+                }
+            </ul>
+        }
+    </div>
+</div>

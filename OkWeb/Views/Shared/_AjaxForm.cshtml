@@ -1,0 +1,14 @@
+﻿@model List<Ok.Domain.Core.News>
+
+@if (Model != null && Model.Any())
+{
+    foreach (var n in Model)
+    {
+        <tr>
+            <td>@n.Source.Name</td>
+            <td>@n.Title</td>
+            <td style="word-break: break-all">@n.Description</td>
+            <td>@n.Date</td>
+        </tr>
+    }
+}
