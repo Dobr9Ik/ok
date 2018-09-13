@@ -82,25 +82,33 @@
     </div>
     <div class="m-3 d-flex flex-row justify-content-center btn-group">
 
-        @if (Model != null && Model.Pagination.TotalPages > 1)
+        @if (Model != null && Model.Pagination.ViewPagination.Any())
         {
-            <ul class="pagination">
-                @for (int i = 1; i <= Model.Pagination.TotalPages; i++)
+        <ul class="pagination">
+            @for (int i = 0; i < Model.Pagination.ViewPagination.Count; i++)
+            {
+                if (Model.Pagination.ViewPagination[i] == Model.Pagination.CurrentPage)
                 {
-                    if (i == Model.Pagination.CurrentPage)
-                    {
-                        <li class="page-item active">
-                            @Html.ActionLink(i.ToString(), "Index", "News", new { page = i, sort = Model.Sort, source = Model.Source }, new { @class = "page-link" })
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="page-item">
-                            @Html.ActionLink(i.ToString(), "Index", "News", new { page = i, sort = Model.Sort, source = Model.Source }, new { @class = "page-link" })
-                        </li>
-                    }
+                    <li class="page-item active">
+                        @Html.ActionLink(Model.Pagination.ViewPagination[i].ToString(), "Index", "News", new { page = i, sort = Model.Sort, source = Model.Source }, new { @class = "page-link" })
+                    </li>
+                    continue;
                 }
-            </ul>
+
+                if (Model.Pagination.ViewPagination[i] == -1)
+                {
+                    <li class="page-item">
+                        <span class="page-link" style="cursor: default !important;">...</span>
+                    </li>
+                    continue;
+                }
+
+                <li class="page-item">
+                    @Html.ActionLink(Model.Pagination.ViewPagination[i].ToString(), "Index", "News", new { page = Model.Pagination.ViewPagination[i], sort = Model.Sort, source = Model.Source }, new { @class = "page-link" })
+                </li>
+
+            }
+        </ul>
         }
     </div>
 </div>

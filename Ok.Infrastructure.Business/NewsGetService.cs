@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ok.Domain.Core;
@@ -43,7 +42,7 @@ namespace Ok.Infrastructure.Business
                         newsList.AddRange(news.OrderByDescending(x => x.Date).ToList());
                         break;
                     case "source":
-                        newsList.AddRange(news.OrderByDescending(x => x.Source.Name).ToList());
+                        newsList.AddRange(news.OrderByDescending(x => x.Source.Name).ThenByDescending(y => y.Date).ToList());
                         break;
                 }
                 return newsList.Skip((page - 1) * _countNews).Take(_countNews).ToList();
@@ -59,7 +58,7 @@ namespace Ok.Infrastructure.Business
                 case "date":
                     return news?.OrderByDescending(x => x.Date).ToList();
                 case "source":
-                    return news?.OrderByDescending(x => x.Source.Name).ToList();
+                    return news?.OrderByDescending(x => x.Source.Name).ThenByDescending(y => y.Date).ToList();
             }
             return news;
         }

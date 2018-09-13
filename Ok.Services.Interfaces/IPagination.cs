@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Ok.Services.Interfaces
@@ -7,5 +8,6 @@ namespace Ok.Services.Interfaces
     {
         Task<int> GetCurrentPage(int page, int source, int sizePage);
         Task<int> GetTotalPage(int source, int sizePage);
+        List<int> GetViewPagination(int totalPage, int currentPage);
     }
 }

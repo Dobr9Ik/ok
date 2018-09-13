@@ -93,7 +93,7 @@ namespace OkWeb.Controllers
                 return new Pagination();
             }
             
-            return new Pagination
+            var p = new Pagination
             {
                 SizePage = _sizePage,
                 CurrentPage = await _pagination.GetCurrentPage(data.Page, data.Source, _sizePage),
@@ -101,6 +101,9 @@ namespace OkWeb.Controllers
                 Sort = data.Sort ?? "date",
                 Source = data.Source
             };
+            p.ViewPagination = _pagination.GetViewPagination(p.TotalPages, p.CurrentPage);
+
+            return p;
         }
 
         private int GetSizePage()

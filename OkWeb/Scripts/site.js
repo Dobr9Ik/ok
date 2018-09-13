@@ -17,7 +17,7 @@
 
     jQuery("#pagination").delegate("a",
         "click",
-        function(e) {
+        function (e) {
             var sort = jQuery("input[type=radio]:checked").val();
             var source = jQuery("select option:selected").val();
             if (source < 0) {
@@ -49,11 +49,11 @@ function setData(sort, source, page) {
                 jQuery("<td></td>").text(source.Name),
                 jQuery("<td></td>").text(result[i].Title),
                 jQuery("<td style=\"word-break:break-all;\"></td>").text(result[i].Description),
-                jQuery("<td>"+ result[i].Date + "</td>"));
+                jQuery("<td>" + result[i].Date + "</td>"));
             jQuery("#result").append(tr);
         }
     }).fail(function (data) {
-        
+        // show error
     });
 }
 
@@ -63,15 +63,23 @@ function setPagination(sort, source, page) {
         url: "/News/PaginationJson",
         data: "source=" + source + "&sort=" + sort + "&page=" + page
     }).done(function (data) {
-        jQuery("#pagination").css("display", "");
-        for (var i = 1; i <= data.TotalPages; i++) {
-            if (i === data.CurrentPage) {
-                jQuery("#pagination").append(jQuery("<li class=\"page-item active\"><a class=\"page-link\">" + i + "</a></li>"));
-            } else {
-                jQuery("#pagination").append(jQuery("<li class=\"page-item\"><a class=\"page-link\">" + i + "</a></li>"));
+        if (data.TotalPages > 2) {
+            jQuery("#pagination").css("display", "");
+            for (var i = 0; i < data.ViewPagination.length; i++) {
+                if (data.ViewPagination[i] === data.CurrentPage) {
+                    jQuery("#pagination").append(jQuery("<li class=\"page-item active\"><a class=\"page-link\">" + data.ViewPagination[i] + "</a></li>"));
+                    continue;
+                }
+
+                if (data.ViewPagination[i] === -1) {
+                    jQuery("#pagination").append(jQuery("<li class=\"page-item\"><span class=\"page-link\" style=\"cursor: default;\">...</span></li>"));
+                    continue;
+                }
+
+                jQuery("#pagination").append(jQuery("<li class=\"page-item\"><a class=\"page-link\">" + data.ViewPagination[i] + "</a></li>"));
             }
         }
-        }).fail(function(data) {
-
+    }).fail(function (data) {
+        // show error
     });
 }
