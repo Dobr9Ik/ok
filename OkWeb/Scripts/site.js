@@ -63,7 +63,7 @@ function setPagination(sort, source, page) {
         url: "/News/PaginationJson",
         data: "source=" + source + "&sort=" + sort + "&page=" + page
     }).done(function (data) {
-        if (data.TotalPages > 2) {
+        if (data.TotalPages >= 2) {
             jQuery("#pagination").css("display", "");
             for (var i = 0; i < data.ViewPagination.length; i++) {
                 if (data.ViewPagination[i] === data.CurrentPage) {
